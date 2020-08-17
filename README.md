@@ -75,31 +75,35 @@ curl -s "https://rapiddns.io/subdomain/$1?full=1#result" | grep "<td><a" | cut -
 ```bash
 curl -s https://dns.bufferover.run/dns?q=.DOMAIN.com |jq -r .FDNS_A[]|cut -d',' -f2|sort -u
 ```
-### Get Subdomains from riddler.io
+
+### Get Subdomains from Riddler.io
 > @pikpikcu
 ```bash
 curl -s "https://riddler.io/search/exportcsv?q=pld:domain.com" | grep -Po "(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u 
 ```
-### Get Subdomains from virustotal
+
+### Get Subdomains from VirusTotal
 > @pikpikcu
 ```bash
 curl -s "https://www.virustotal.com/ui/domains/domain.com/subdomains?limit=40" | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u
 ```
-### Get Subdomains from certspotte
+### Get Subdomains from CertSpotter
 > @pikpikcu
 ```bash
 curl -s "https://certspotter.com/api/v0/certs?domain=domain.com" | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u
 ```
-### Get Subdomains from web.archive
+
+### Get Subdomains from Archive
 > @pikpikcu
 ```bash
 curl -s "http://web.archive.org/cdx/search/cdx?url=*.domain.com/*&output=text&fl=original&collapse=urlkey" | sed -e 's_https*://__' -e "s/\/.*//" | sort -u
 ```
-### Get Subdomains from jldc
+### Get Subdomains from JLDC
 > @pikpikcu
 ```bash
 curl -s "https://jldc.me/anubis/subdomains/domain.com" | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u
 ```
+
 ### Find All Allocated IP ranges for ASN given an IP address
 > wains.be
 
@@ -107,32 +111,6 @@ curl -s "https://jldc.me/anubis/subdomains/domain.com" | grep -Po "((http|https)
 whois -h whois.radb.net -i origin -T route $(whois -h whois.radb.net $1 | grep origin: | awk '{print $NF}' | head -1) | grep -w "route:" | awk '{print $NF}' | sort -n
 ```
 
-
-### Custom Wordlist
-> @Tomnonnom
-
-```bash
-gau domain.com| unfurl -u keys | tee -a wordlist.txt ; gau domain.com | unfurl -u paths|tee -a ends.txt; sed 's#/#\n#g' ends.txt  | sort -u | tee -a wordlist.txt | sort -u ;rm ends.txt  | sed -i -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.wolf\|\.bmp//g' wordlist.txt
-```
-
-
-```bash
-cat domains.txt | httprobe | xargs curl | tok | tr '[:upper:]' '[:lower:]' | sort -u | tee -a words.txt  
-```
-
-
-### Juicy Information
-> @Prial Islam Khan
-
-```bash
-for sub in $(cat domains.txt);do /usr/bin/gron "https://otx.alienvault.com/otxapi/indicator/hostname/url_list/$sub?limit=100&page=1" | grep "\burl\b" | gron --ungron | jq |egrep -wi 'url' | awk '{print $2}' | sed 's/"//g'| sort -u | tee -a file.txt  ;done
-```
-
-
-
-
-
-=======
 ### Extract IPs from a File
 > @emenalf
 
@@ -145,4 +123,23 @@ grep -E -o '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0
 
 ```bash
 subfinder -silent -d uber.com | filter-resolved | cf-check | sort -u | naabu -rate 40000 -silent -verify | httprobe
+```
 
+
+### Create Custom Wordlists
+> @tomnomnom
+
+```bash
+gau domain.com| unfurl -u keys | tee -a wordlist.txt ; gau domain.com | unfurl -u paths|tee -a ends.txt; sed 's#/#\n#g' ends.txt  | sort -u | tee -a wordlist.txt | sort -u ;rm ends.txt  | sed -i -e 's/\.css\|\.png\|\.jpeg\|\.jpg\|\.svg\|\.gif\|\.wolf\|\.bmp//g' wordlist.txt
+```
+
+```bash
+cat domains.txt | httprobe | xargs curl | tok | tr '[:upper:]' '[:lower:]' | sort -u | tee -a words.txt  
+```
+
+### Extracts Juicy Informations
+> @Prial Islam Khan
+
+```bash
+for sub in $(cat domains.txt);do /usr/bin/gron "https://otx.alienvault.com/otxapi/indicator/hostname/url_list/$sub?limit=100&page=1" | grep "\burl\b" | gron --ungron | jq |egrep -wi 'url' | awk '{print $2}' | sed 's/"//g'| sort -u | tee -a file.txt  ;done
+```
