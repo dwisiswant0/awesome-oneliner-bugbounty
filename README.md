@@ -75,7 +75,31 @@ curl -s "https://rapiddns.io/subdomain/$1?full=1#result" | grep "<td><a" | cut -
 ```bash
 curl -s https://dns.bufferover.run/dns?q=.DOMAIN.com |jq -r .FDNS_A[]|cut -d',' -f2|sort -u
 ```
-
+### Get Subdomains from riddler.io
+> @pikpikcu
+```bash
+curl -s "https://riddler.io/search/exportcsv?q=pld:domain.com" | grep -Po "(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u 
+```
+### Get Subdomains from virustotal
+> @pikpikcu
+```bash
+curl -s "https://www.virustotal.com/ui/domains/domain.com/subdomains?limit=40" | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u
+```
+### Get Subdomains from certspotte
+> @pikpikcu
+```bash
+curl -s "https://certspotter.com/api/v0/certs?domain=domain.com" | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u
+```
+### Get Subdomains from web.archive
+> @pikpikcu
+```bash
+curl -s "http://web.archive.org/cdx/search/cdx?url=*.domain.com/*&output=text&fl=original&collapse=urlkey" | sed -e 's_https*://__' -e "s/\/.*//" | sort -u
+```
+### Get Subdomains from jldc
+> @pikpikcu
+```bash
+curl -s "https://jldc.me/anubis/subdomains/domain.com" | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u
+```
 ### Find All Allocated IP ranges for ASN given an IP address
 > wains.be
 
