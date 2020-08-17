@@ -70,7 +70,7 @@ curl -s "https://rapiddns.io/subdomain/$1?full=1#result" | grep "<td><a" | cut -
 ```
 
 ### Get Subdomains from BufferOver.run
-> @_ayoubfathi_
+> @\_ayoubfathi\_
 
 ```bash
 curl -s https://dns.bufferover.run/dns?q=.DOMAIN.com |jq -r .FDNS_A[]|cut -d',' -f2|sort -u
@@ -107,4 +107,18 @@ for sub in $(cat domains.txt);do /usr/bin/gron "https://otx.alienvault.com/otxap
 
 
 
+
+=======
+### Extract IPs from a File
+> @emenalf
+
+```bash
+grep -E -o '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)' file.txt
+```
+
+### Ports Scan without CloudFlare
+> @dwisiswant0
+
+```bash
+subfinder -silent -d uber.com | filter-resolved | cf-check | sort -u | naabu -rate 40000 -silent -verify | httprobe
 
