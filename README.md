@@ -143,3 +143,17 @@ cat domains.txt | httprobe | xargs curl | tok | tr '[:upper:]' '[:lower:]' | sor
 ```bash
 for sub in $(cat domains.txt);do /usr/bin/gron "https://otx.alienvault.com/otxapi/indicator/hostname/url_list/$sub?limit=100&page=1" | grep "\burl\b" | gron --ungron | jq |egrep -wi 'url' | awk '{print $2}' | sed 's/"//g'| sort -u | tee -a file.txt  ;done
 ```
+
+### Find subdomain takeover
+> @hahwul
+
+```bash
+subfinder -d {target} >> domains ; assetfinder -subs-only {target} >> domains ; amass enum -norecursive -noalts -d {target} >> domains ; subjack -w domains -t 100 -timeout 30 -ssl -c ~/go/src/github.com/haccer/subjack/fingerprints.json -v 3 >> takeover ; 
+```
+
+### Get multiple target's Custom URLs from ParamSpider
+> @hahwul
+
+```bash
+cat domains | xargs -I % python3 ~/tool/ParamSpider/paramspider.py -l high -o ./spidering/paramspider/% -d % ;
+```
