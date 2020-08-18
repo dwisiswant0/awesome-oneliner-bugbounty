@@ -150,3 +150,10 @@ for sub in $(cat domains.txt);do /usr/bin/gron "https://otx.alienvault.com/otxap
 ```bash
 subfinder -d {target} >> domains ; assetfinder -subs-only {target} >> domains ; amass enum -norecursive -noalts -d {target} >> domains ; subjack -w domains -t 100 -timeout 30 -ssl -c ~/go/src/github.com/haccer/subjack/fingerprints.json -v 3 >> takeover ; 
 ```
+
+### Get multiple target's Custom URLs from ParamSpider
+> @hahwul
+
+```bash
+cat domains | xargs -I % python3 ~/tool/ParamSpider/paramspider.py -l high -o ./spidering/paramspider/% -d % ;
+```
