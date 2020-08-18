@@ -103,7 +103,11 @@ curl -s "http://web.archive.org/cdx/search/cdx?url=*.domain.com/*&output=text&fl
 ```bash
 curl -s "https://jldc.me/anubis/subdomains/domain.com" | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u
 ```
-
+### Get Subdomains from crt.sh
+> @vict0ni
+```bash
+curl -s "https://crt.sh/?q=%25.$1&output=json" | jq -r '.[].name_value' | sed 's/\*\.//g' | sort -u
+```
 ### Find All Allocated IP ranges for ASN given an IP address
 > wains.be
 
