@@ -179,3 +179,10 @@ cat domains | xargs -I % python3 ~/tool/ParamSpider/paramspider.py -l high -o ./
 ```bash
 cat alive-subdomains.txt | parallel -j50 -q curl -w 'Status:%{http_code}\t  Size:%{size_download}\t %{url_effective}\n' -o /dev/null -sk
 ```
+
+### Dump In-scope Assets HackerOne Programs from `bounty-targets-data`
+> @dwisiswant0
+
+```bash
+curl -sL https://github.com/arkadiyt/bounty-targets-data/blob/master/data/hackerone_data.json?raw=true | jq -r '.[].targets.in_scope[] | [.asset_identifier, .asset_type] | @tsv'
+```
