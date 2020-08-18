@@ -105,9 +105,11 @@ curl -s "https://jldc.me/anubis/subdomains/domain.com" | grep -Po "((http|https)
 ```
 ### Get Subdomains from crt.sh
 > @vict0ni
+
 ```bash
 curl -s "https://crt.sh/?q=%25.$1&output=json" | jq -r '.[].name_value' | sed 's/\*\.//g' | sort -u
 ```
+
 ### Find All Allocated IP ranges for ASN given an IP address
 > wains.be
 
@@ -129,7 +131,6 @@ grep -E -o '(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0
 subfinder -silent -d uber.com | filter-resolved | cf-check | sort -u | naabu -rate 40000 -silent -verify | httprobe
 ```
 
-
 ### Create Custom Wordlists
 > @tomnomnom
 
@@ -148,7 +149,7 @@ cat domains.txt | httprobe | xargs curl | tok | tr '[:upper:]' '[:lower:]' | sor
 for sub in $(cat domains.txt);do /usr/bin/gron "https://otx.alienvault.com/otxapi/indicator/hostname/url_list/$sub?limit=100&page=1" | grep "\burl\b" | gron --ungron | jq |egrep -wi 'url' | awk '{print $2}' | sed 's/"//g'| sort -u | tee -a file.txt  ;done
 ```
 
-### Find subdomain takeover
+### Find Subdomains TakeOver
 > @hahwul
 
 ```bash
