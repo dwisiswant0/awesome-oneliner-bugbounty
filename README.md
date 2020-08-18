@@ -87,6 +87,7 @@ curl -s "https://riddler.io/search/exportcsv?q=pld:domain.com" | grep -Po "(([\w
 ```bash
 curl -s "https://www.virustotal.com/ui/domains/domain.com/subdomains?limit=40" | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u
 ```
+
 ### Get Subdomains from CertSpotter
 > @pikpikcu
 ```bash
@@ -98,16 +99,25 @@ curl -s "https://certspotter.com/api/v0/certs?domain=domain.com" | grep -Po "((h
 ```bash
 curl -s "http://web.archive.org/cdx/search/cdx?url=*.domain.com/*&output=text&fl=original&collapse=urlkey" | sed -e 's_https*://__' -e "s/\/.*//" | sort -u
 ```
+
 ### Get Subdomains from JLDC
 > @pikpikcu
 ```bash
 curl -s "https://jldc.me/anubis/subdomains/domain.com" | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u
 ```
+
 ### Get Subdomains from crt.sh
 > @vict0ni
 
 ```bash
 curl -s "https://crt.sh/?q=%25.$1&output=json" | jq -r '.[].name_value' | sed 's/\*\.//g' | sort -u
+```
+
+### Sort & Tested Domains from Recon.dev
+> @stokfedrik
+
+```bash
+curl "https://recon.dev/api/search?key=apikey&domain=example.com" |jq -r '.[].rawDomains[]' | sed 's/ //g' | sort -u |httpx -silent
 ```
 
 ### Find All Allocated IP ranges for ASN given an IP address
