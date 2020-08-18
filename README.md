@@ -180,9 +180,41 @@ cat domains | xargs -I % python3 ~/tool/ParamSpider/paramspider.py -l high -o ./
 cat alive-subdomains.txt | parallel -j50 -q curl -w 'Status:%{http_code}\t  Size:%{size_download}\t %{url_effective}\n' -o /dev/null -sk
 ```
 
-### Dump In-scope Assets HackerOne Programs from `bounty-targets-data`
+### Dump In-scope Assets from `bounty-targets-data`
 > @dwisiswant0
+
+#### HackerOne Programs
 
 ```bash
 curl -sL https://github.com/arkadiyt/bounty-targets-data/blob/master/data/hackerone_data.json?raw=true | jq -r '.[].targets.in_scope[] | [.asset_identifier, .asset_type] | @tsv'
+```
+
+#### BugCrowd Programs
+
+```bash
+curl -sL https://github.com/arkadiyt/bounty-targets-data/raw/master/data/bugcrowd_data.json | jq -r '.[].targets.in_scope[] | [.target, .type] | @tsv'
+```
+
+#### Intigriti Programs
+
+```bash
+curl -sL https://github.com/arkadiyt/bounty-targets-data/raw/master/data/intigriti_data.json | jq -r '.[].targets.in_scope[] | [.endpoint, .type] | @tsv'
+```
+
+#### YesWeHack Programs
+
+```bash
+curl -sL https://github.com/arkadiyt/bounty-targets-data/raw/master/data/yeswehack_data.json | jq -r '.[].targets.in_scope[] | [.target, .type] | @tsv'
+```
+
+#### HackenProof Programs
+
+```bash
+curl -sL https://github.com/arkadiyt/bounty-targets-data/raw/master/data/hackenproof_data.json | jq -r '.[].targets.in_scope[] | [.target, .type, .instruction] | @tsv'
+```
+
+#### Federacy Programs
+
+```bash
+curl -sL https://github.com/arkadiyt/bounty-targets-data/raw/master/data/federacy_data.json | jq -r '.[].targets.in_scope[] | [.target, .type] | @tsv'
 ```
