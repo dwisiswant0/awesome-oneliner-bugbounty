@@ -172,3 +172,10 @@ subfinder -d {target} >> domains ; assetfinder -subs-only {target} >> domains ; 
 ```bash
 cat domains | xargs -I % python3 ~/tool/ParamSpider/paramspider.py -l high -o ./spidering/paramspider/% -d % ;
 ```
+
+### URLs Probing with cURL + Parallel
+> @akita_zen
+
+```bash
+cat alive-subdomains.txt | parallel -j50 -q curl -w 'Status:%{http_code}\t  Size:%{size_download}\t %{url_effective}\n' -o /dev/null -sk
+```
