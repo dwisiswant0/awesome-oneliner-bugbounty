@@ -105,7 +105,10 @@ curl -s "http://web.archive.org/cdx/search/cdx?url=*.domain.com/*&output=text&fl
 ```bash
 curl -s "https://jldc.me/anubis/subdomains/domain.com" | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u
 ```
-
+### Brute subs with gobuster.
+```bash
+gobuster dns -r 8.8.8.8 --wildcard -d $DOMAIN -t 50 -c -i -w subdomains-top1million-20000.txt -z -q > tmp.txt && cat tmp.txt | cut -d' ' -f2 | sort -u > subs.txt && cat tmp.txt | cut -d' ' -f3 | tr -d '[]' | sort -u -V > hosts.txt
+```
 ### Get Subdomains from crt.sh
 > @vict0ni
 
@@ -150,6 +153,10 @@ gau domain.com| unfurl -u keys | tee -a wordlist.txt ; gau domain.com | unfurl -
 
 ```bash
 cat domains.txt | httprobe | xargs curl | tok | tr '[:upper:]' '[:lower:]' | sort -u | tee -a words.txt  
+```
+
+```bash
+curl -s 'http://web.archive.org/cdx/search/cdx?url=hackerone.com/*&output=text&fl=original&collapse=urlkey' | sed -e "s/\//\n/g" | sort -u | grep -v ‘svg\|.png\|.img\|.ttf\|http:\|:\|.eot\|woff\|ico\|css\|bootstrap\|wordpress\|.jpg\|.jpeg’ | perl -pe "s/\%(\w\w)/chr hex $1/ge" > wordlist.txt
 ```
 
 ### Extracts Juicy Informations
