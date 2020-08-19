@@ -218,8 +218,10 @@ curl -sL https://github.com/arkadiyt/bounty-targets-data/raw/master/data/hackenp
 ```bash
 curl -sL https://github.com/arkadiyt/bounty-targets-data/raw/master/data/federacy_data.json | jq -r '.[].targets.in_scope[] | [.target, .type] | @tsv'
 ```
+
 ###  Get all the urls out of a sitemap.xml
-@healthyoutlet
+> @healthyoutlet
+
 ```bash
 curl -s domain.com/sitemap.xml | xmllint --format - | grep -e 'loc' | sed -r 's|</?loc>||g'
 ```
