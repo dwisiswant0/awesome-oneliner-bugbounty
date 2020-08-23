@@ -180,6 +180,13 @@ cat domains | xargs -I % python3 ~/tool/ParamSpider/paramspider.py -l high -o ./
 cat alive-subdomains.txt | parallel -j50 -q curl -w 'Status:%{http_code}\t  Size:%{size_download}\t %{url_effective}\n' -o /dev/null -sk
 ```
 
+### Dump In-scope Assets from `chaos-bugbounty-list`
+> @dwisiswant0
+
+```bash
+curl -sL https://github.com/projectdiscovery/public-bugbounty-programs/raw/master/chaos-bugbounty-list.json | jq -r '.programs[].domains | to_entries | .[].value'
+```
+
 ### Dump In-scope Assets from `bounty-targets-data`
 > @dwisiswant0
 
