@@ -246,3 +246,10 @@ curl -s $1 | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*" | sort | uniq | grep "
 ```bash
 curl -s https://domain.tld/v2/swagger.json | jq '.paths | keys[]'
 ```
+
+### CORS Misconfiguration
+> @manas_hunter
+
+```bash
+site="https://example.com"; gau "$site" | while read url;do target=$(curl -s -I -H "Origin: https://evil.com" -X GET $url) | if grep 'https://evil.com'; then [Potentional CORS Found]echo $url;else echo Nothing on "$url";fi;done
+```
