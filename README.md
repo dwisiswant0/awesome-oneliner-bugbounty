@@ -120,6 +120,13 @@ curl -s "https://crt.sh/?q=%25.$1&output=json" | jq -r '.[].name_value' | sed 's
 curl "https://recon.dev/api/search?key=apikey&domain=example.com" |jq -r '.[].rawDomains[]' | sed 's/ //g' | sort -u |httpx -silent
 ```
 
+### Subdomain Bruteforcer with FFUF
+> @GochaOqradze
+
+```bash
+ffuf -u https://FUZZ.rootdomain -w jhaddixall.txt -v | grep "| URL |" | awk '{print $4}'
+```
+
 ### Find All Allocated IP ranges for ASN given an IP address
 > wains.be
 
