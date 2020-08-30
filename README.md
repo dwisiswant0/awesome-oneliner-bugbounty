@@ -260,3 +260,10 @@ curl -s https://domain.tld/v2/swagger.json | jq '.paths | keys[]'
 ```bash
 site="https://example.com"; gau "$site" | while read url;do target=$(curl -s -I -H "Origin: https://evil.com" -X GET $url) | if grep 'https://evil.com'; then [Potentional CORS Found]echo $url;else echo Nothing on "$url";fi;done
 ```
+
+### Find Hidden Servers and/or Admin Panels
+> @rez0__
+
+```bash
+ffuf -c -u https://target .com -H "Host: FUZZ" -w vhost_wordlist.txt 
+```
