@@ -239,3 +239,10 @@ curl -s domain.com/sitemap.xml | xmllint --format - | grep -e 'loc' | sed -r 's|
 ```bash
 curl -s $1 | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*" | sort | uniq | grep ".js" > jslinks.txt; while IFS= read link; do python linkfinder.py -i "$link" -o cli; done < jslinks.txt | grep $2 | grep -v $3 | sort -n | uniq; rm -rf jslinks.txt
 ```
+
+### Extract Endpoints from swagger.json
+> @zer0pwn
+
+```bash
+curl -s https://domain.tld/v2/swagger.json | jq '.paths | keys[]'
+```
