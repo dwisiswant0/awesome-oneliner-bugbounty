@@ -105,7 +105,11 @@ curl -s "http://web.archive.org/cdx/search/cdx?url=*.domain.com/*&output=text&fl
 ```bash
 curl -s "https://jldc.me/anubis/subdomains/domain.com" | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u
 ```
-
+### Get Subdomains from securitytrails
+> @pikpikcu
+```bash
+curl -s "https://securitytrails.com/list/apex_domain/domain.com" | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | grep ".domain.com" | sort -u
+```
 ### Get Subdomains from crt.sh
 > @vict0ni
 
