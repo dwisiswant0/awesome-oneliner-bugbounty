@@ -271,3 +271,10 @@ site="https://example.com"; gau "$site" | while read url;do target=$(curl -s -I 
 ```bash
 ffuf -c -u https://target .com -H "Host: FUZZ" -w vhost_wordlist.txt 
 ```
+
+### Recon using api.recon.dev
+> @z0idsec
+
+```bash
+curl -s -w "\n%{http_code}" https://api.recon.dev/search?domain=site.com | jg .[].domain
+```
