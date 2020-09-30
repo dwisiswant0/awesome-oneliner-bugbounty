@@ -278,3 +278,12 @@ ffuf -c -u https://target .com -H "Host: FUZZ" -w vhost_wordlist.txt
 ```bash
 curl -s -w "\n%{http_code}" https://api.recon.dev/search?domain=site.com | jg .[].domain
 ```
+
+### Find live host/domain/assets
+> @1ndianl33t
+
+```bash
+Reconx() {
+ subfinder -d $1 -silent | httpx -silent -follow-redirects -mc 200 | cut -d '/' -f3 | sort -u
+}
+```
