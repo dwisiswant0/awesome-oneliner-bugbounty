@@ -280,10 +280,8 @@ curl -s -w "\n%{http_code}" https://api.recon.dev/search?domain=site.com | jg .[
 ```
 
 ### Find live host/domain/assets
-> @1ndianl33t
+> @_YashGoti_
 
 ```bash
-Reconx() {
- subfinder -d $1 -silent | httpx -silent -follow-redirects -mc 200 | cut -d '/' -f3 | sort -u
-}
+subfinder -d http://tesla.com -silent | httpx -silent -follow-redirects -mc 200 | cut -d '/' -f3 | sort -u
 ```
