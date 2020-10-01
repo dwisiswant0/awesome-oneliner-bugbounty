@@ -1,4 +1,5 @@
 # Awesome One-liner Bug Bounty [![Awesome](https://awesome.re/badge-flat2.svg)](https://awesome.re)
+# Bugbounty
 > A collection of awesome one-liner scripts especially for bug bounty.
 
 This repository stores and houses various one-liner for bug bounty tips provided by me as well as contributed by the community. Your contributions and suggestions are heartily♥ welcome.
