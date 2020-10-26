@@ -292,3 +292,31 @@ subfinder -d http://tesla.com -silent | httpx -silent -follow-redirects -mc 200 
 ```bash
 waybackurls testphp.vulnweb.com| grep '=' |qsreplace '"><script>alert(1)</script>' | while read host do ; do curl -s --path-as-is --insecure "$host" | grep -qs "<script>alert(1)</script>" && echo "$host \033[0;31m" Vulnerable;done
 ```
+
+### Extract endpoints from APK files
+> @laughface809
+
+```bash
+apkurlgrep -a path/to/file.apk
+```
+
+### Get Subdomains from IPs
+> @laughface809
+
+```bash
+python3 hosthunter.py <target-ips.txt> > vhosts.txt
+```
+
+### webscreenshot
+> @laughface809
+
+```bash
+python webscreenshot.py -i list.txt -w 40
+```
+
+### Removes duplicate URLs and parameter combinations
+> @laughface809
+
+```bash
+cat urls.txt |qsreplace -a
+```
