@@ -320,3 +320,10 @@ python webscreenshot.py -i list.txt -w 40
 ```bash
 cat urls.txt |qsreplace -a
 ```
+
+### Gather domains from content-security-policy:
+> @geeknik
+
+```bash
+curl -v -silent https://$domain --stderr - | awk '/^content-security-policy:/' | grep -Eo "[a-zA-Z0-9./?=_-]*" |  sed -e '/\./!d' -e '/[^A-Za-z0-9._-]/d' -e 's/^\.//' | sort -u
+```
