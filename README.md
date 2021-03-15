@@ -95,7 +95,7 @@ curl -s "https://www.virustotal.com/ui/domains/domain.com/subdomains?limit=40" |
 ```
 
 ### Get Subdomains from CertSpotter
-> @pikpikcu
+> @nopantrootdance
 ```bash
 curl -s "https://certspotter.com/api/v1/issuances?domain=domain.com&include_subdomains=true&expand=dns_names" | jq .[].dns_names | tr -d '[]"\n ' | tr ',' '\n'
 ```
