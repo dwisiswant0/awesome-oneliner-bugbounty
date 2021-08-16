@@ -106,7 +106,11 @@ curl -s "https://riddler.io/search/exportcsv?q=pld:domain.com" | grep -Po "(([\w
 ```bash
 curl -s "https://www.virustotal.com/ui/domains/domain.com/subdomains?limit=40" | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u
 ```
-
+### Get Subdomain with cyberxplore
+> @pikpikcu
+```
+curl https://subbuster.cyberxplore.com/api/find?domain=yahoo.com -s | grep -Po "(([\w.-]*)\.([\w]*)\.([A-z]))\w+" 
+```
 ### Get Subdomains from CertSpotter
 > @caryhooper
 ```bash
