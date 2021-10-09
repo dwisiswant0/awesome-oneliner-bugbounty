@@ -94,6 +94,10 @@ curl -s "https://rapiddns.io/subdomain/$1?full=1#result" | grep "<td><a" | cut -
 ```bash
 curl -s https://dns.bufferover.run/dns?q=.DOMAIN.com |jq -r .FDNS_A[]|cut -d',' -f2|sort -u
 ```
+> @AnubhavSingh_
+```bash
+curl "https://tls.bufferover.run/dns?q=$DOMAIN" | jq -r .Results'[]' | rev | cut -d ',' -f1 | rev | sort -u | grep "\.$DOMAIN"
+```
 
 ### Get Subdomains from Riddler.io
 > @pikpikcu
