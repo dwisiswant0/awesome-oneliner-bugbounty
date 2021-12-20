@@ -124,7 +124,7 @@ curl https://subbuster.cyberxplore.com/api/find?domain=yahoo.com -s | grep -Po "
 ### Get Subdomains from CertSpotter
 > @caryhooper
 ```bash
-curl -s "https://certspotter.com/api/v1/issuances?domain=domain.com&include_subdomains=true&expand=dns_names" | jq .[].dns_names | tr -d '[]"\n ' | tr ',' '\n'
+curl -s "https://certspotter.com/api/v1/issuances?domain=domain.com&include_subdomains=true&expand=dns_names" | jq .[].dns_names | grep -Po "(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u 
 ```
 
 ### Get Subdomains from Archive
