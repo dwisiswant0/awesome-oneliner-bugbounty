@@ -34,7 +34,13 @@ gospider -S targets_urls.txt -c 10 -d 5 --blacklist ".(jpg|jpeg|gif|css|tif|tiff
 > @fanimalikhack
 
 ```bash
- waybackurls testphp.vulnweb.com | gf xss | sed 's/=.*/=/' | sort -u | tee Possible_xss.txt && cat Possible_xss.txt | dalfox -b blindxss.xss.ht pipe > output.txt
+waybackurls testphp.vulnweb.com | gf xss | sed 's/=.*/=/' | sort -u | tee Possible_xss.txt && cat Possible_xss.txt | dalfox -b blindxss.xss.ht pipe > output.txt
+```
+
+> @oliverrickfors
+
+```bash
+cat hosts | getJS | httpx --match-regex "addEventListener\((?:'|\")message(?:'|\")"
 ```
 
 ### Prototype Pollution
