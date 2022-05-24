@@ -396,3 +396,10 @@ python3 hosthunter.py HOSTS.txt > OUT.txt
 ```bash
 curl -vs URL --stderr - | awk '/^content-security-policy:/' | grep -Eo "[a-zA-Z0-9./?=_-]*" |  sed -e '/\./!d' -e '/[^A-Za-z0-9._-]/d' -e 's/^\.//' | sort -u
 ```
+
+### Nmap IP:PORT Parser Piped to HTTPX
+> @dwisiswant0
+
+```bash
+nmap -v0 HOST -oX /dev/stdout | jc --xml -p | jq -r '.nmaprun.host | (.address["@addr"] + ":" + .ports.port[]["@portid"])' | httpx --silent
+```
