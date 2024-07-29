@@ -16,6 +16,13 @@ This section defines specific terms or placeholders that are used throughout one
 
 ---
 
+### Grep Comments From Html
+> @tamimhasan404
+
+```bash
+curl -v --stderr - https://HOST | grep "<\!--"
+```
+
 ### Local File Inclusion
 > @dwisiswant0
 
