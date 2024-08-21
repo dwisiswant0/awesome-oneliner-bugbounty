@@ -118,6 +118,13 @@ one | uniq); done
 export host="HOST" ; curl -s "https://rapiddns.io/subdomain/$host?full=1#result" | grep -e "<td>.*$host</td>" | grep -oP '(?<=<td>)[^<]+' | sort -u
 ```
 
+### Get Subdomains from RedHunt Labs
+> @redhuntlabs
+
+```bash
+curl --location 'https://reconapi.redhuntlabs.com/community/v1/domains/subdomains?domain=domain.com&page_size=10&page=1' --header 'X-BLOBR-KEY: api_key' | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u
+```
+
 ### Get Subdomains from BufferOver.run
 > @\_ayoubfathi\_
 
